@@ -1,0 +1,10 @@
+.Letter-exact {
+    background-color: green;
+}
+.Letter-misplaced {
+    background-color: yellow;
+}
+.Letter {
+    flex: 1;
+    border: 1px solid;
+}

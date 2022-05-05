@@ -1,0 +1,6 @@
+.Word {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    gap: 0.5em;
+}

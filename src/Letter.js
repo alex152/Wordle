@@ -1,7 +1,9 @@
+import './Letter.css'
+
 function Letter(props) {
     return (
-        <span>
-            {props.value}
+        <span className={['Letter'].concat(props.value?.exact ? ['Letter-exact'] : props.value?.misplaced ? ['Letter-misplaced'] : []).join(' ')}>
+            {props.value?.char ?? '_'}
         </span>
     );
 }

@@ -1,0 +1,8 @@
+.Wordle {
+  text-align: center;
+}
+.Wordle-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
