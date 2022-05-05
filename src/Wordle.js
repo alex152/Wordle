@@ -65,11 +65,9 @@ class Wordle extends React.Component {
   }
   render() {
     return (
-      <div className='Wordle'>
-        <header className='Wordle-header'>
-          <h1>Welcome to my WORDLE</h1>
-        </header>
-        <div className='Wordle-container'>
+      <div className='wordle'>
+        <h1 className='title'>Welcome to my WORDLE</h1>
+        <div className='wordle-container'>
           {this.state.words.map((word, i) => <Word word={word} key={i} />)}
         </div>
         {this.state.gameWon ? <div>Great job!</div> : null}

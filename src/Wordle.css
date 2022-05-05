@@ -1,8 +1,18 @@
-.Wordle {
+.wordle {
   text-align: center;
-}
-.Wordle-container {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+}
+
+.wordle-container {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.title {
+  margin: 0;
+  padding: 8px;
 }

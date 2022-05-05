@@ -3,7 +3,7 @@ import Letter from './Letter'
 
 function Word(props) {
     return (
-        <div className='Word'>
+        <div className='word'>
             {props.word.map((letter, i) => <Letter value={letter} key={i}/>)}
         </div>
     );

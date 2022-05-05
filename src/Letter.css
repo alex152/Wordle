@@ -1,10 +1,11 @@
-.Letter-exact {
+.letter-exact {
     background-color: green;
 }
-.Letter-misplaced {
+.letter-misplaced {
     background-color: yellow;
 }
-.Letter {
-    flex: 1;
+.letter {
+    flex: 1 1;
     border: 1px solid;
+    border-radius: 5px;
 }
