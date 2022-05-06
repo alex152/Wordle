@@ -5,6 +5,6 @@ import Wordle from './Wordle';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Wordle word="ample" />
+    <Wordle />
   </React.StrictMode>
 );

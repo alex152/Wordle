@@ -1,6 +1,7 @@
 import './Wordle.css';
 import React from 'react';
 import Word from './Word';
+import RAPID_API_KEYS from './keys.json';
 
 const WORD_LENGTH = 5;
 const NUM_OF_TRIES = 6;
@@ -9,27 +10,39 @@ class Wordle extends React.Component {
   constructor(params) {
     super(params);
     this.state = {
-      word: params.word.toUpperCase(),
       words: Array(NUM_OF_TRIES).fill(Array(WORD_LENGTH).fill(null)),
       currWord: 0,
       currLetter: 0,
       gameWon: false,
-      gameLost: false
+      gameLost: false,
+      invalidWord: false
     }
     this.onKeyDown = this.onKeyDown.bind(this);
   }
-  onKeyDown(event) {
+  async onKeyDown(event) {
     if (this.state.gameWon || this.state.gameLost) return;
+    this.setState({ invalidWord: false }); 
     switch (event.key) {
       case 'Enter':
         if (this.state.currLetter < WORD_LENGTH) return;
+        const guess = this.state.words[this.state.currWord].map(({ char }) => char).join('');
+        const validateResponse = await (await fetch(new URL(`words/${guess}`, 'https://wordsapiv1.p.rapidapi.com'), {
+          headers: RAPID_API_KEYS
+        })).json();
+        if (validateResponse.success === false) {
+          this.setState({ invalidWord: true }); 
+          return;
+        };
+        const guessRequest = new URL('daily', 'https://v1.wordle.k2bd.dev');
+        guessRequest.searchParams.append('guess', guess);
+        const guessResponse = await (await fetch(guessRequest)).json();
         const words = this.state.words.map((word, i) => {
           if (i !== this.state.currWord) return word;
           return word.map((letter, j) => {
-            switch (this.state.word.indexOf(letter.char)) {
-              case -1: return letter;
-              case j: return { ...letter, exact: true };
-              default: return { ...letter, misplaced: true };
+            switch (guessResponse[j].result) {
+              case 'correct': return { ...letter, exact: true };
+              case 'present': return { ...letter, misplaced: true };
+              default: return letter;
             }
           })
         });
@@ -68,10 +81,15 @@ class Wordle extends React.Component {
       <div className='wordle'>
         <h1 className='title'>Welcome to my WORDLE</h1>
         <div className='wordle-container'>
-          {this.state.words.map((word, i) => <Word word={word} key={i} />)}
+          {this.state.words.map((word, i) => <Word word={(i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === this.state.currWord} invalid={(i === this.state.currWord) && this.state.invalidWord} key={i} />)}
         </div>
-        {this.state.gameWon ? <div>Great job!</div> : null}
-        {this.state.gameLost ? <div>Game over you lost, the word is {this.state.word}</div> : null}
+        <p className='status'>{
+          this.state.gameWon ? 'Great job!' :
+          this.state.gameLost ? 'Game over you lost!' :
+          this.state.gameLost ? 'Game over you lost!' :
+          this.state.invalidWord ? 'Invalid word! Erase and try again' :
+          'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
+        </p>
       </div>
     );
   }

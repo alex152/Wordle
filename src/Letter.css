@@ -1,11 +1,21 @@
-.letter-exact {
-    background-color: green;
-}
-.letter-misplaced {
-    background-color: yellow;
-}
 .letter {
     flex: 1 1;
     border: 1px solid;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+}
+
+.letter.exact {
+    background-color: green;
+}
+
+.letter.misplaced {
+    background-color: yellow;
+}
+
+.letter.current {
+    background-color: blue;
 }
