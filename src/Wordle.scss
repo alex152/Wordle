@@ -1,52 +1,52 @@
 @use 'palette';
 
 .wordle-outer-container {
-  flex: 1 1;
-  display: flex;
-  justify-content: space-evenly;
+    flex: 1 1;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .wordle-inner-container {
-  flex: 1 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+    flex: 1 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .letter {
-  flex: 1 1;
-  border: 1px solid;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4px;
-  max-width: 80px;
-  max-height: 80px;
+    flex: 1 1;
+    border: 1px solid;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+    max-width: 80px;
+    max-height: 80px;
 
-  &.exact {
-    background-color: palette.$green;
-  }
+    &.exact {
+        background-color: palette.$green;
+    }
 
-  &.misplaced {
-    background-color: palette.$yellow;
-  }
+    &.misplaced {
+        background-color: palette.$yellow;
+    }
 
-  &.current {
-    background-color: palette.$blue;
-  }
+    &.current {
+        background-color: palette.$blue;
+    }
 }
 
 .word {
-  flex: 1 1;
-  display: flex;
-  justify-content: center;
+    flex: 1 1;
+    display: flex;
+    justify-content: center;
 
-  &.current {
-    background-color: palette.$gray;
-  }
+    &.current {
+        background-color: palette.$gray;
+    }
 
-  &.invalid {
-    background-color: palette.$red;
-  }
+    &.invalid {
+        background-color: palette.$red;
+    }
 }
