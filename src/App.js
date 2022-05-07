@@ -4,13 +4,13 @@ import Wordle from './Wordle';
 import Keyboard from './Keyboard';
 
 const WORD_LENGTH = 5;
-const NUM_OF_TRIES = 6;
+const NUM_ATTEMPTS = 6;
 
 class App extends React.Component {
     constructor(params) {
         super(params);
         this.state = {
-            words: Array(NUM_OF_TRIES).fill(Array(WORD_LENGTH).fill(null)),
+            words: Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)),
             currWord: 0,
             currLetter: 0,
             gameWon: false,
@@ -65,7 +65,7 @@ class App extends React.Component {
                     currWord: this.state.currWord + 1,
                     currLetter: 0,
                     gameWon,
-                    gameLost: (this.state.currWord === NUM_OF_TRIES - 1) && !gameWon,
+                    gameLost: (this.state.currWord === NUM_ATTEMPTS - 1) && !gameWon,
                     absentLetters,
                     foundLetters
                 });
@@ -94,13 +94,13 @@ class App extends React.Component {
     render() {
         return (
             <div className='wordle'>
-                <h1 className='title'>Welcome to my WORDLE!</h1>
+                <h1 className='title'>Welcome to my daily WORDLE!</h1>
                 <div className='status'>
                     <h2>{
                         this.state.gameWon ? 'Great job!' :
                             this.state.gameLost ? 'Game over you lost!' :
                                 this.state.invalidWord ? 'Invalid word Erase and try again' :
-                                    'Type in one letter at a time <Enter> to submit <Backspace> to erase'}
+                                    `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
                     </h2>
                 </div>
                 <Wordle {...this.state} />
