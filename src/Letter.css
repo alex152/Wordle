@@ -6,6 +6,8 @@
     align-items: center;
     justify-content: center;
     margin: 4px;
+    max-width: 80px;
+    max-height: 80px;
 }
 
 .letter.exact {

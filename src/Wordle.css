@@ -5,14 +5,22 @@
   flex-direction: column;
 }
 
-.wordle-container {
+.wordle-outer-container {
+  flex: 1 1;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.wordle-inner-container {
   flex: 1 1;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 }
 
-.title {
-  margin: 0;
-  padding: 8px;
+.status {
+  min-height: 6.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
