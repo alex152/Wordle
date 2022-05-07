@@ -2,6 +2,7 @@ import React from 'react';
 import Wordle from './Wordle';
 import Keyboard from './Keyboard';
 import Stack from 'react-bootstrap/Stack';
+import './App.scss';
 
 const WORD_LENGTH = 5;
 const NUM_OF_TRIES = 6;
@@ -93,7 +94,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Stack gap={3}>
+      <Stack id='app' gap={3}>
         <h1 className='text-center'>Welcome to my WORDLE!</h1>
         <h4 className='text-center'>{
           this.state.gameWon ? 'Great job!' :
