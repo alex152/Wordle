@@ -17,7 +17,7 @@ function Keyboard(props) {
                         'i',
                         'o',
                         'p'
-                    ].map((key, i) => (<KeyboardButton keyboardKey={key} key={i} clickedHandler={props.clickedHandler} />))}
+                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} />))}
                 </div>
                 <div>
                     {[
@@ -30,7 +30,7 @@ function Keyboard(props) {
                         'j',
                         'k',
                         'l'
-                    ].map((key, i) => (<KeyboardButton keyboardKey={key} key={i} clickedHandler={props.clickedHandler} />))}
+                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} />))}
                 </div>
                 <div>
                     {[
@@ -41,11 +41,11 @@ function Keyboard(props) {
                         'b',
                         'n',
                         'm'
-                    ].map((key, i) => (<KeyboardButton keyboardKey={key} key={i} clickedHandler={props.clickedHandler} />))}
+                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} />))}
                 </div>
             </span>
-            <KeyboardButton highlight={props.invalid} keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
-            <KeyboardButton highlight={props.submit && !props.invalid} keyboardKey='Enter' clickedHandler={props.clickedHandler} />
+            <KeyboardButton highlight={props.invalid} label='⌫' keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
+            <KeyboardButton highlight={props.submit && !props.invalid} label='⏎' keyboardKey='Enter' clickedHandler={props.clickedHandler} />
         </div>
     )
 }

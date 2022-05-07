@@ -1,7 +1,7 @@
 .keyboard-button {
     height: 100%;
     min-height: 40px;
-    min-width: 40px;
+    min-width: 30px;
 }
 
 .highlight {
