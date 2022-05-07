@@ -1,114 +1,36 @@
-import React from 'react';
-import Word from './Word';
-import Keyboard from './Keyboard';
 import Container from 'react-bootstrap/Container';
-import Stack from 'react-bootstrap/Stack';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-const WORD_LENGTH = 5;
-const NUM_OF_TRIES = 6;
+function Letter(props) {
+  const classes = ['text-center', 'border'];
+  if (props.exact) classes.push('exact');
+  if (props.misplaced) classes.push('misplaced');
+  if (props.current) classes.push('current');
+  return (
+    <Col>
+      <div className={classes.join(' ')} >{props.char ?? '\0'}</div>
+    </Col>
+  );
+}
 
-class Wordle extends React.Component {
-  constructor(params) {
-    super(params);
-    this.state = {
-      words: Array(NUM_OF_TRIES).fill(Array(WORD_LENGTH).fill(null)),
-      currWord: 0,
-      currLetter: 0,
-      gameWon: false,
-      gameLost: false,
-      invalidWord: false,
-      absentLetters: {},
-      foundLetters: {}
-    }
-    this.onKeyDown = this.onKeyDown.bind(this);
-  }
-  async onKeyDown({ key }) {
-    if (this.state.gameWon || this.state.gameLost || (this.state.invalidWord && key !== 'Backspace')) return;
-    this.setState({ invalidWord: false });
-    switch (key) {
-      case 'Enter':
-        if (this.state.currLetter < WORD_LENGTH) return;
-        const guess = this.state.words[this.state.currWord].map(({ char }) => char).join('');
-        const validateResponse = await (await fetch(new URL(`words/${guess}`, 'https://wordsapiv1.p.rapidapi.com'), {
-          headers: {
-            'X-RapidAPI-Host': process.env.REACT_APP_RAPID_API_HOST,
-            'X-RapidAPI-Key': process.env.REACT_APP_RAPID_API_KEY
-          }
-        })).json();
-        if (validateResponse.success === false) {
-          this.setState({ invalidWord: true });
-          return;
-        };
-        const guessRequest = new URL('daily', 'https://v1.wordle.k2bd.dev');
-        guessRequest.searchParams.append('guess', guess);
-        const guessResponse = await (await fetch(guessRequest)).json();
-        const absentLetters = this.state.absentLetters;
-        const foundLetters = this.state.foundLetters;
-        const words = this.state.words.map((word, i) => {
-          if (i !== this.state.currWord) return word;
-          return word.map((letter, j) => {
-            switch (guessResponse[j].result) {
-              case 'correct':
-                foundLetters[letter.char] = true;
-                return { ...letter, exact: true };
-              case 'present':
-                foundLetters[letter.char] = true;
-                return { ...letter, misplaced: true };
-              default:
-                absentLetters[letter.char] = true;
-                return letter;
-            }
-          })
-        });
-        const gameWon = words[this.state.currWord].every(letter => letter.exact);
-        this.setState({
-          words,
-          currWord: this.state.currWord + 1,
-          currLetter: 0,
-          gameWon,
-          gameLost: (this.state.currWord === NUM_OF_TRIES - 1) && !gameWon,
-          absentLetters,
-          foundLetters
-        });
-        break;
-      case 'Backspace':
-        this.setState({
-          words: this.state.words.map((word, i) => (i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter - 1) ? null : letter) : word),
-          currLetter: this.state.currLetter > 0 ? this.state.currLetter - 1 : 0
-        });
-        break;
-      default:
-        const char = key.toUpperCase();
-        if (char.length !== 1 || char < 'A' || char > 'Z') return;
-        this.setState({
-          words: this.state.words.map((word, i) => (i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { char } : letter) : word),
-          currLetter: this.state.currLetter < WORD_LENGTH ? this.state.currLetter + 1 : WORD_LENGTH
-        });
-    }
-  }
-  componentDidMount() {
-    document.addEventListener('keydown', this.onKeyDown);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.onKeyDown);
-  }
-  render() {
-    return (
-      <Stack gap={2} className='mx-auto'>
-        <h1>Welcome to my WORDLE!</h1>
-        <h4>{
-          this.state.gameWon ? 'Great job!' :
-            this.state.gameLost ? 'Game over you lost!' :
-              this.state.invalidWord ? 'Invalid word! Erase and try again' :
-                'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
-        </h4>
-        <Stack>
-          {this.state.words.map((word, i) => <Word word={(i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === this.state.currWord} invalid={(i === this.state.currWord) && this.state.invalidWord} key={i} />)}
-        </Stack>
-        <Keyboard clickedHandler={this.onKeyDown} absentLetters={this.state.absentLetters} foundLetters={this.state.foundLetters} invalid={this.state.invalidWord} submit={this.state.currLetter === WORD_LENGTH} />
-      </Stack>
-    );
-  }
+function Word(props) {
+  const classes = [];
+  if (props.invalid) classes.push('invalid');
+  if (props.current) classes.push('current');
+  return (
+    <Row className={classes.join(' ')}>
+      {props.word.map((letter, i) => <Letter {...(letter ?? {})} key={i} />)}
+    </Row>
+  );
+}
+
+function Wordle(props) {
+  return (
+    <Container>
+      {props.words.map((word, i) => <Word word={(i === props.currWord) ? word.map((letter, j) => (j === props.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === props.currWord} invalid={(i === props.currWord) && props.invalidWord} key={i} />)}
+    </Container>
+  );
 }
 
 export default Wordle;

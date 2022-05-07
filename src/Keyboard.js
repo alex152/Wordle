@@ -1,12 +1,13 @@
-import Stack from 'react-bootstrap/Stack';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function KeyboardButton(props) {
-    const classes = [];
-    if (props.highlight) classes.push('highlight');
-    if (props.grayout) classes.push('grayout');
-    if (props.green) classes.push('green');
+    const classes = ['m-1'];
+    if (props.highlight) classes.push('btn-info');
+    if (props.absent) classes.push('btn-secondary');
+    if (props.found) classes.push('btn-success');
     return (
         <Button className={classes.join(' ')} onClick={() => props.clickedHandler({ key: props.keyboardKey ?? props.label })} >
             {props.label}
@@ -15,49 +16,61 @@ function KeyboardButton(props) {
 }
 
 function Keyboard(props) {
+    const genCharKey = key => ({
+        label: key,
+        absent: props.absentLetters[key.toUpperCase()],
+        found: props.foundLetters[key.toUpperCase()]
+    })
+    const layout = [
+        [
+            genCharKey('q'),
+            genCharKey('w'),
+            genCharKey('e'),
+            genCharKey('r'),
+            genCharKey('t'),
+            genCharKey('y'),
+            genCharKey('u'),
+            genCharKey('i'),
+            genCharKey('o'),
+            genCharKey('p')
+        ],
+        [
+            genCharKey('a'),
+            genCharKey('s'),
+            genCharKey('d'),
+            genCharKey('f'),
+            genCharKey('g'),
+            genCharKey('h'),
+            genCharKey('j'),
+            genCharKey('k'),
+            genCharKey('l')
+        ],
+        [
+            { label: 'Back', keyboardKey: 'Backspace', highlight: props.invalid },
+            genCharKey('z'),
+            genCharKey('x'),
+            genCharKey('c'),
+            genCharKey('v'),
+            genCharKey('b'),
+            genCharKey('n'),
+            genCharKey('m'),
+            { label: 'Done', keyboardKey: 'Enter', highlight: props.submit && !props.invalid }
+        ]
+    ]
     return (
-        <Stack>
-            <ButtonGroup>
-                {[
-                    'q',
-                    'w',
-                    'e',
-                    'r',
-                    't',
-                    'y',
-                    'u',
-                    'i',
-                    'o',
-                    'p'
-                ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
-            </ButtonGroup>
-            <ButtonGroup>
-                {[
-                    'a',
-                    's',
-                    'd',
-                    'f',
-                    'g',
-                    'h',
-                    'j',
-                    'k',
-                    'l'
-                ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
-            </ButtonGroup>
-            <ButtonGroup>
-                <KeyboardButton highlight={props.invalid} label='Back' keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
-                {[
-                    'z',
-                    'x',
-                    'c',
-                    'v',
-                    'b',
-                    'n',
-                    'm'
-                ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
-                <KeyboardButton highlight={props.submit && !props.invalid} label='Done' keyboardKey='Enter' clickedHandler={props.clickedHandler} />
-            </ButtonGroup>
-        </Stack>
+        <Container>
+            {layout.map((row, i) => (
+                <Row key={i} >
+                    <Col className='d-flex justify-content-center' key={i} >
+                        {
+                            row.map((key, j) => (
+                                <KeyboardButton {...key} key={j} clickedHandler={props.clickedHandler} />)
+                            )
+                        }
+                    </Col>
+                </Row>
+            ))}
+        </Container>
     )
 }
 
