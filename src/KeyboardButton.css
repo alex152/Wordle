@@ -1,3 +1,7 @@
 .keyboard-button {
     height: 100%;
 }
+
+.highlight {
+    background-color: blue;
+}

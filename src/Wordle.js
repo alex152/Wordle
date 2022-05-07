@@ -20,7 +20,7 @@ class Wordle extends React.Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
   async onKeyDown({ key }) {
-    if (this.state.gameWon || this.state.gameLost) return;
+    if (this.state.gameWon || this.state.gameLost || (this.state.invalidWord && key !== 'Backspace')) return;
     this.setState({ invalidWord: false });
     switch (key) {
       case 'Enter':
@@ -83,16 +83,16 @@ class Wordle extends React.Component {
     return (
       <div className='wordle'>
         <h1 className='title'>Welcome to my WORDLE</h1>
-        <div className='wordle-container'>
-          {this.state.words.map((word, i) => <Word word={(i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === this.state.currWord} invalid={(i === this.state.currWord) && this.state.invalidWord} key={i} />)}
-        </div>
-        <p className='status'>{
+        <h2 className='status'>{
           this.state.gameWon ? 'Great job!' :
             this.state.gameLost ? 'Game over you lost!' :
               this.state.invalidWord ? 'Invalid word! Erase and try again' :
                 'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
-        </p>
-        <Keyboard clickedHandler={this.onKeyDown} />
+        </h2>
+        <div className='wordle-container'>
+          {this.state.words.map((word, i) => <Word word={(i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === this.state.currWord} invalid={(i === this.state.currWord) && this.state.invalidWord} key={i} />)}
+        </div>
+        <Keyboard clickedHandler={this.onKeyDown} invalid={this.state.invalidWord} submit={this.state.currLetter === WORD_LENGTH} />
       </div>
     );
   }

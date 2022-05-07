@@ -44,12 +44,8 @@ function Keyboard(props) {
                     ].map((key, i) => (<KeyboardButton keyboardKey={key} key={i} clickedHandler={props.clickedHandler} />))}
                 </div>
             </span>
-            <span className='section'>
-                <KeyboardButton keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
-            </span>
-            <span className='section'>
-                <KeyboardButton keyboardKey='Enter' clickedHandler={props.clickedHandler} />
-            </span>
+            <KeyboardButton highlight={props.invalid} keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
+            <KeyboardButton highlight={props.submit && !props.invalid} keyboardKey='Enter' clickedHandler={props.clickedHandler} />
         </div>
     )
 }
