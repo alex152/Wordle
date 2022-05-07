@@ -2,7 +2,6 @@ import React from 'react';
 import Wordle from './Wordle';
 import Keyboard from './Keyboard';
 import Stack from 'react-bootstrap/Stack';
-import './App.scss';
 
 const WORD_LENGTH = 5;
 const NUM_OF_TRIES = 6;
@@ -94,13 +93,13 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Stack id='app' gap={3} className='p-3'>
+      <Stack id='app' gap={3} className='p-3 bg-light'>
         <h1 className='text-center'>Welcome to my WORDLE!</h1>
         <h4 className='text-center'>{
           this.state.gameWon ? 'Great job!' :
             this.state.gameLost ? 'Game over you lost!' :
               this.state.invalidWord ? 'Invalid word! Erase and try again' :
-                'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
+                'Type in letters one by one <Enter> to submit <Backspace> to erase'}
         </h4>
         <Wordle {...this.state}></Wordle>
         <Keyboard clickedHandler={this.onKeyDown} absentLetters={this.state.absentLetters} foundLetters={this.state.foundLetters} invalid={this.state.invalidWord} submit={this.state.currLetter === WORD_LENGTH} />

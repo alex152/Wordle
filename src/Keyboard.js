@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 function KeyboardButton(props) {
     const classes = ['m-1'];
     if (props.highlight) classes.push('btn-info');
-    if (props.absent) classes.push('btn-secondary');
+    if (props.absent) classes.push('btn-accent1');
     if (props.found) classes.push('btn-success');
     return (
         <Button className={classes.join(' ')} onClick={() => props.clickedHandler({ key: props.keyboardKey ?? props.label })} >

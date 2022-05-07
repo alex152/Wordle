@@ -1,0 +1,21 @@
+$white: #fefaf9;
+
+$theme-colors: (
+    "light":      #e2e6e6,
+    "dark":       #010505,
+    "primary":    #2f10f2,
+    "secondary":  #7369f7,
+    "info":       #8d8afa,
+    "accent1":    #424244,
+    "accent2":    #868181,
+    "accent3":    #a29e9f,
+    "success":    #09a762,
+    "warning":    #e2cc09,
+    "danger":     #f12003,
+);
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+html, body, #root, #app {
+    height: 100%;
+}
