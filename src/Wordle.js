@@ -1,7 +1,6 @@
 import './Wordle.css';
 import React from 'react';
 import Word from './Word';
-import RAPID_API_KEYS from './keys.json';
 
 const WORD_LENGTH = 5;
 const NUM_OF_TRIES = 6;
@@ -21,16 +20,19 @@ class Wordle extends React.Component {
   }
   async onKeyDown(event) {
     if (this.state.gameWon || this.state.gameLost) return;
-    this.setState({ invalidWord: false }); 
+    this.setState({ invalidWord: false });
     switch (event.key) {
       case 'Enter':
         if (this.state.currLetter < WORD_LENGTH) return;
         const guess = this.state.words[this.state.currWord].map(({ char }) => char).join('');
         const validateResponse = await (await fetch(new URL(`words/${guess}`, 'https://wordsapiv1.p.rapidapi.com'), {
-          headers: RAPID_API_KEYS
+          headers: {
+            'X-RapidAPI-Host': process.env.REACT_APP_RAPID_API_HOST,
+            'X-RapidAPI-Key': process.env.REACT_APP_RAPID_API_KEY
+          }
         })).json();
         if (validateResponse.success === false) {
-          this.setState({ invalidWord: true }); 
+          this.setState({ invalidWord: true });
           return;
         };
         const guessRequest = new URL('daily', 'https://v1.wordle.k2bd.dev');
@@ -85,10 +87,10 @@ class Wordle extends React.Component {
         </div>
         <p className='status'>{
           this.state.gameWon ? 'Great job!' :
-          this.state.gameLost ? 'Game over you lost!' :
-          this.state.gameLost ? 'Game over you lost!' :
-          this.state.invalidWord ? 'Invalid word! Erase and try again' :
-          'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
+            this.state.gameLost ? 'Game over you lost!' :
+              this.state.gameLost ? 'Game over you lost!' :
+                this.state.invalidWord ? 'Invalid word! Erase and try again' :
+                  'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
         </p>
       </div>
     );
