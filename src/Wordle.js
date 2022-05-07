@@ -1,6 +1,7 @@
 import './Wordle.css';
 import React from 'react';
 import Word from './Word';
+import Keyboard from './Keyboard';
 
 const WORD_LENGTH = 5;
 const NUM_OF_TRIES = 6;
@@ -18,10 +19,10 @@ class Wordle extends React.Component {
     }
     this.onKeyDown = this.onKeyDown.bind(this);
   }
-  async onKeyDown(event) {
+  async onKeyDown({ key }) {
     if (this.state.gameWon || this.state.gameLost) return;
     this.setState({ invalidWord: false });
-    switch (event.key) {
+    switch (key) {
       case 'Enter':
         if (this.state.currLetter < WORD_LENGTH) return;
         const guess = this.state.words[this.state.currWord].map(({ char }) => char).join('');
@@ -64,7 +65,7 @@ class Wordle extends React.Component {
         });
         break;
       default:
-        const char = event.key.toUpperCase();
+        const char = key.toUpperCase();
         if (char.length !== 1 || char < 'A' || char > 'Z') return;
         this.setState({
           words: this.state.words.map((word, i) => (i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { char } : letter) : word),
@@ -88,10 +89,10 @@ class Wordle extends React.Component {
         <p className='status'>{
           this.state.gameWon ? 'Great job!' :
             this.state.gameLost ? 'Game over you lost!' :
-              this.state.gameLost ? 'Game over you lost!' :
-                this.state.invalidWord ? 'Invalid word! Erase and try again' :
-                  'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
+              this.state.invalidWord ? 'Invalid word! Erase and try again' :
+                'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
         </p>
+        <Keyboard clickedHandler={this.onKeyDown} />
       </div>
     );
   }
