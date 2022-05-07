@@ -94,7 +94,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <Stack id='app' gap={3}>
+      <Stack id='app' gap={3} className='p-3'>
         <h1 className='text-center'>Welcome to my WORDLE!</h1>
         <h4 className='text-center'>{
           this.state.gameWon ? 'Great job!' :
