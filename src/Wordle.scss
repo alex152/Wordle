@@ -1,9 +1,4 @@
-.wordle {
-  text-align: center;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+@use 'palette';
 
 .wordle-outer-container {
   flex: 1 1;
@@ -18,14 +13,40 @@
   justify-content: space-evenly;
 }
 
-.title {
-  margin: 8px;
+.letter {
+  flex: 1 1;
+  border: 1px solid;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px;
+  max-width: 80px;
+  max-height: 80px;
+
+  &.exact {
+    background-color: palette.$green;
+  }
+
+  &.misplaced {
+    background-color: palette.$yellow;
+  }
+
+  &.current {
+    background-color: palette.$blue;
+  }
 }
 
-.status {
-  min-height: 6.5em;
+.word {
+  flex: 1 1;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  margin: 8px;
+
+  &.current {
+    background-color: palette.$gray;
+  }
+
+  &.invalid {
+    background-color: palette.$red;
+  }
 }

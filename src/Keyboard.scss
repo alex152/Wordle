@@ -1,5 +1,26 @@
+@use 'palette';
+
 .keyboard {
     display: flex;
     justify-content: center;
     margin: 8px;
+}
+
+.keyboard-button {
+    height: 100%;
+    min-height: 40px;
+    min-width: 30px;
+    margin: 2px;
+
+    &.highlight {
+        background-color: palette.$blue;
+    }
+
+    &.grayout {
+        background-color: palette.$gray;
+    }
+
+    &.green {
+        background-color: palette.$green;
+    }
 }

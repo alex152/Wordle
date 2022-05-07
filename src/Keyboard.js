@@ -1,50 +1,69 @@
 import './Keyboard.scss';
-import KeyboardButton from './KeyboardButton';
+
+function KeyboardButton(props) {
+    const classes = [];
+    if (props.highlight) classes.push('highlight');
+    if (props.grayout) classes.push('grayout');
+    if (props.green) classes.push('green');
+    return (
+        <button className={['keyboard-button'].concat(classes).join(' ')} onClick={() => props.clickedHandler({ key: props.keyboardKey ?? props.label })} >
+            {props.label}
+        </button>
+    );
+}
 
 function Keyboard(props) {
+    const genCharKey = key => ({
+        label: key,
+        absent: props.absentLetters[key.toUpperCase()],
+        found: props.foundLetters[key.toUpperCase()]
+    });
+    const layout = [
+        [
+            genCharKey('q'),
+            genCharKey('w'),
+            genCharKey('e'),
+            genCharKey('r'),
+            genCharKey('t'),
+            genCharKey('y'),
+            genCharKey('u'),
+            genCharKey('i'),
+            genCharKey('o'),
+            genCharKey('p')
+        ],
+        [
+            genCharKey('a'),
+            genCharKey('s'),
+            genCharKey('d'),
+            genCharKey('f'),
+            genCharKey('g'),
+            genCharKey('h'),
+            genCharKey('j'),
+            genCharKey('k'),
+            genCharKey('l')
+        ],
+        [
+            { label: 'Back', keyboardKey: 'Backspace', highlight: props.invalid },
+            genCharKey('z'),
+            genCharKey('x'),
+            genCharKey('c'),
+            genCharKey('v'),
+            genCharKey('b'),
+            genCharKey('n'),
+            genCharKey('m'),
+            { label: 'Done', keyboardKey: 'Enter', highlight: props.submit && !props.invalid }
+        ]
+    ]
     return (
         <div className='keyboard'>
             <span className='section'>
-                <div>
-                    {[
-                        'q',
-                        'w',
-                        'e',
-                        'r',
-                        't',
-                        'y',
-                        'u',
-                        'i',
-                        'o',
-                        'p'
-                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
-                </div>
-                <div>
-                    {[
-                        'a',
-                        's',
-                        'd',
-                        'f',
-                        'g',
-                        'h',
-                        'j',
-                        'k',
-                        'l'
-                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
-                </div>
-                <div>
-                    <KeyboardButton highlight={props.invalid} label='Back' keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
-                    {[
-                        'z',
-                        'x',
-                        'c',
-                        'v',
-                        'b',
-                        'n',
-                        'm'
-                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
-                    <KeyboardButton highlight={props.submit && !props.invalid} label='Done' keyboardKey='Enter' clickedHandler={props.clickedHandler} />
-                </div>
+                {layout.map((row, i) => (
+                    <div key={i} >
+                        {
+                            row.map((key, j) => (<KeyboardButton {...key} key={j} clickedHandler={props.clickedHandler} />))
+                        }
+                    </div>
+                ))}
             </span>
         </div>
     )
