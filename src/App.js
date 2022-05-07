@@ -99,12 +99,12 @@ class App extends React.Component {
                     <h2>{
                         this.state.gameWon ? 'Great job!' :
                             this.state.gameLost ? 'Game over you lost!' :
-                                this.state.invalidWord ? 'Invalid word! Erase and try again' :
-                                    'Type in letters one by one, <Enter> to submit, <Backspace> to erase'}
+                                this.state.invalidWord ? 'Invalid word Erase and try again' :
+                                    'Type in one letter at a time <Enter> to submit <Backspace> to erase'}
                     </h2>
                 </div>
                 <Wordle {...this.state} />
-                <Keyboard clickedHandler={this.onKeyDown} absentLetters={this.state.absentLetters} foundLetters={this.state.foundLetters} invalid={this.state.invalidWord} submit={this.state.currLetter === WORD_LENGTH} />
+                <Keyboard {...this.state} clickedHandler={this.onKeyDown} submit={this.state.currLetter === WORD_LENGTH} />
             </div>
         );
     }
