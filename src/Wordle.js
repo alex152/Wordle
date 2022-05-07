@@ -15,7 +15,9 @@ class Wordle extends React.Component {
       currLetter: 0,
       gameWon: false,
       gameLost: false,
-      invalidWord: false
+      invalidWord: false,
+      absentLetters: {},
+      foundLetters: {}
     }
     this.onKeyDown = this.onKeyDown.bind(this);
   }
@@ -39,13 +41,21 @@ class Wordle extends React.Component {
         const guessRequest = new URL('daily', 'https://v1.wordle.k2bd.dev');
         guessRequest.searchParams.append('guess', guess);
         const guessResponse = await (await fetch(guessRequest)).json();
+        const absentLetters = this.state.absentLetters;
+        const foundLetters = this.state.foundLetters;
         const words = this.state.words.map((word, i) => {
           if (i !== this.state.currWord) return word;
           return word.map((letter, j) => {
             switch (guessResponse[j].result) {
-              case 'correct': return { ...letter, exact: true };
-              case 'present': return { ...letter, misplaced: true };
-              default: return letter;
+              case 'correct':
+                foundLetters[letter.char] = true;
+                return { ...letter, exact: true };
+              case 'present':
+                foundLetters[letter.char] = true;
+                return { ...letter, misplaced: true };
+              default:
+                absentLetters[letter.char] = true;
+                return letter;
             }
           })
         });
@@ -55,7 +65,9 @@ class Wordle extends React.Component {
           currWord: this.state.currWord + 1,
           currLetter: 0,
           gameWon,
-          gameLost: (this.state.currWord === NUM_OF_TRIES - 1) && !gameWon
+          gameLost: (this.state.currWord === NUM_OF_TRIES - 1) && !gameWon,
+          absentLetters,
+          foundLetters
         });
         break;
       case 'Backspace':
@@ -82,7 +94,7 @@ class Wordle extends React.Component {
   render() {
     return (
       <div className='wordle'>
-        <h1 className='title'>Welcome to my WORDLE</h1>
+        <h1 className='title'>Welcome to my WORDLE!</h1>
         <div className='status'>
           <h2>{
             this.state.gameWon ? 'Great job!' :
@@ -97,7 +109,7 @@ class Wordle extends React.Component {
             {this.state.words.map((word, i) => <Word word={(i === this.state.currWord) ? word.map((letter, j) => (j === this.state.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === this.state.currWord} invalid={(i === this.state.currWord) && this.state.invalidWord} key={i} />)}
           </div>
         </div>
-        <Keyboard clickedHandler={this.onKeyDown} invalid={this.state.invalidWord} submit={this.state.currLetter === WORD_LENGTH} />
+        <Keyboard clickedHandler={this.onKeyDown} absentLetters={this.state.absentLetters} foundLetters={this.state.foundLetters} invalid={this.state.invalidWord} submit={this.state.currLetter === WORD_LENGTH} />
       </div>
     );
   }

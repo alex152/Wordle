@@ -17,7 +17,7 @@ function Keyboard(props) {
                         'i',
                         'o',
                         'p'
-                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} />))}
+                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
                 </div>
                 <div>
                     {[
@@ -30,7 +30,7 @@ function Keyboard(props) {
                         'j',
                         'k',
                         'l'
-                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} />))}
+                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
                 </div>
                 <div>
                     <KeyboardButton highlight={props.invalid} label='Back' keyboardKey='Backspace' clickedHandler={props.clickedHandler} />
@@ -42,7 +42,7 @@ function Keyboard(props) {
                         'b',
                         'n',
                         'm'
-                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} />))}
+                    ].map((key, i) => (<KeyboardButton label={key} key={i} clickedHandler={props.clickedHandler} grayout={props.absentLetters[key.toUpperCase()]} green={props.foundLetters[key.toUpperCase()]} />))}
                     <KeyboardButton highlight={props.submit && !props.invalid} label='Done' keyboardKey='Enter' clickedHandler={props.clickedHandler} />
                 </div>
             </span>

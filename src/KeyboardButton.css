@@ -5,6 +5,14 @@
     margin: 2px;
 }
 
-.highlight {
+.keyboard-button.highlight {
     background-color: blue;
+}
+
+.keyboard-button.grayout {
+    background-color: gray;
+}
+
+.keyboard-button.green {
+    background-color: green;
 }
