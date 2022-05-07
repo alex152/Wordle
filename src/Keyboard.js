@@ -3,8 +3,8 @@ import './Keyboard.scss';
 function KeyboardButton(props) {
     const classes = [];
     if (props.highlight) classes.push('highlight');
-    if (props.grayout) classes.push('grayout');
-    if (props.green) classes.push('green');
+    if (props.absent) classes.push('absent');
+    if (props.found) classes.push('found');
     return (
         <button className={['keyboard-button'].concat(classes).join(' ')} onClick={() => props.clickedHandler({ key: props.keyboardKey ?? props.label })} >
             {props.label}
@@ -13,6 +13,7 @@ function KeyboardButton(props) {
 }
 
 function Keyboard(props) {
+    console.log(props);
     const genCharKey = key => ({
         label: key,
         absent: props.absentLetters[key.toUpperCase()],
@@ -43,7 +44,7 @@ function Keyboard(props) {
             genCharKey('l')
         ],
         [
-            { label: 'Back', keyboardKey: 'Backspace', highlight: props.invalid },
+            { label: 'Back', keyboardKey: 'Backspace', highlight: props.invalidWord },
             genCharKey('z'),
             genCharKey('x'),
             genCharKey('c'),
@@ -51,7 +52,7 @@ function Keyboard(props) {
             genCharKey('b'),
             genCharKey('n'),
             genCharKey('m'),
-            { label: 'Done', keyboardKey: 'Enter', highlight: props.submit && !props.invalid }
+            { label: 'Done', keyboardKey: 'Enter', highlight: props.submit && !props.invalidWord }
         ]
     ]
     return (
