@@ -1,4 +1,4 @@
-import './KeyboardButton.css'
+import './KeyboardButton.scss'
 
 function KeyboardButton(props) {
     const classes = [];

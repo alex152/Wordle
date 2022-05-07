@@ -1,4 +1,4 @@
-import './Word.css'
+import './Word.scss'
 import Letter from './Letter'
 
 function Word(props) {

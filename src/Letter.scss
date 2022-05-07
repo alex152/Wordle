@@ -1,3 +1,5 @@
+@use 'palette';
+
 .letter {
     flex: 1 1;
     border: 1px solid;
@@ -8,16 +10,16 @@
     margin: 4px;
     max-width: 80px;
     max-height: 80px;
-}
 
-.letter.exact {
-    background-color: green;
-}
+    &.exact {
+        background-color: palette.$green;
+    }
 
-.letter.misplaced {
-    background-color: yellow;
-}
+    &.misplaced {
+        background-color: palette.$yellow;
+    }
 
-.letter.current {
-    background-color: blue;
+    &.current {
+        background-color: palette.$blue;
+    }
 }

@@ -1,4 +1,4 @@
-import './Letter.css'
+import './Letter.scss'
 
 function Letter(props) {
     const classes = [];

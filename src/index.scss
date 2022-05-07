@@ -1,0 +1,16 @@
+@use 'palette';
+
+html {
+    height: 100%;
+    font-family: Helvetica, sans-serif;
+    background-color: palette.$background;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#root {
+    height: 100%;
+}

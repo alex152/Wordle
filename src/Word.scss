@@ -1,0 +1,15 @@
+@use 'palette';
+
+.word {
+    flex: 1 1;
+    display: flex;
+    justify-content: center;
+
+    &.current {
+        background-color: palette.$gray;
+    }
+    
+    &.invalid {
+        background-color: palette.$red;
+    }
+}

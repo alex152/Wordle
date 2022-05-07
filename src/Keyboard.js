@@ -1,4 +1,4 @@
-import './Keyboard.css';
+import './Keyboard.scss';
 import KeyboardButton from './KeyboardButton';
 
 function Keyboard(props) {

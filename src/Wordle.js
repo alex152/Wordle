@@ -1,4 +1,4 @@
-import './Wordle.css';
+import './Wordle.scss';
 import React from 'react';
 import Word from './Word';
 import Keyboard from './Keyboard';
