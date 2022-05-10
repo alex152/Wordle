@@ -74,12 +74,13 @@ function App() {
     };
 
     useEffect(() => {
-        console.log('hello');
         document.addEventListener('keydown', onKeyDown);
-        return () => {
-            document.removeEventListener('keydown', onKeyDown);
-            console.log('goodbye');
-        };
+
+        const keyboard = document.querySelector('.react-simple-keyboard');
+        Array.from(keyboard.querySelectorAll('.hg-button')).filter(elem => !'abcdefghijklmnopqrstuvwxyz'.split('').concat(['{enter}', '{bksp}']).includes(elem.getAttribute('data-skbtn'))).forEach(elem => elem.style.display = 'none');
+        keyboard.querySelector('[data-skbtn="q"]').parentElement.appendChild(keyboard.querySelector('[data-skbtn="{bksp}"]'));
+
+        return () => document.removeEventListener('keydown', onKeyDown);
     });
 
     return (
@@ -100,7 +101,7 @@ function App() {
                 invalidWord={invalidWord}
             />
             <Keyboard
-                onKeyPress={onKeyDown}
+                onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}
                 submit={currLetter === WORD_LENGTH}
             />
         </div>
