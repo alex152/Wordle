@@ -1,34 +1,30 @@
 import './Wordle.scss';
 import React from 'react';
 
-function Letter(props) {
+function Letter({ exact, misplaced, current, char }) {
     const classes = [];
-    if (props.exact) classes.push('exact');
-    if (props.misplaced) classes.push('misplaced');
-    if (props.current) classes.push('current');
-    return (
-        <span className={['letter'].concat(classes).join(' ')}>
-            {props.char}
-        </span>
-    );
+    if (exact) classes.push('exact');
+    if (misplaced) classes.push('misplaced');
+    if (current) classes.push('current');
+    return (<span className={['letter'].concat(classes).join(' ')}>{char}</span>);
 }
 
-function Word(props) {
+function Word({ word, invalid, current }) {
     const classes = [];
-    if (props.invalid) classes.push('invalid');
-    if (props.current) classes.push('current');
+    if (invalid) classes.push('invalid');
+    if (current) classes.push('current');
     return (
         <div className={['word'].concat(classes).join(' ')}>
-            {props.word.map((letter, i) => <Letter {...letter} key={i} />)}
+            {word.map((letter, i) => <Letter {...letter} key={i} />)}
         </div>
     );
 }
 
-function Wordle(props) {
+function Wordle({ words, currWord, currLetter, invalidWord }) {
     return (
         <div className='wordle-outer-container'>
             <div className='wordle-inner-container'>
-                {props.words.map((word, i) => <Word word={(i === props.currWord) ? word.map((letter, j) => (j === props.currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === props.currWord} invalid={(i === props.currWord) && props.invalidWord} key={i} />)}
+                {words.map((word, i) => <Word word={(i === currWord) ? word.map((letter, j) => (j === currLetter) ? { ...letter, current: true } : { ...letter, current: false }) : word} current={i === currWord} invalid={(i === currWord) && invalidWord} key={i} />)}
             </div>
         </div>
     );
