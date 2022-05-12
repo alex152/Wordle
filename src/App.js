@@ -1,8 +1,7 @@
 import './App.scss';
 import Wordle from './Wordle';
-import Keyboard from 'react-simple-keyboard';
-import 'react-simple-keyboard/build/css/index.css';
-import React, { useState, useEffect } from 'react';
+import KeyboardWrapper from './KeyboardWrapper';
+import { useState, useEffect } from 'react';
 
 const WORD_LENGTH = 5;
 const NUM_ATTEMPTS = 6;
@@ -75,11 +74,6 @@ function App() {
 
     useEffect(() => {
         document.addEventListener('keydown', onKeyDown);
-
-        const keyboard = document.querySelector('.react-simple-keyboard');
-        Array.from(keyboard.querySelectorAll('.hg-button')).filter(elem => !'abcdefghijklmnopqrstuvwxyz'.split('').concat(['{enter}', '{bksp}']).includes(elem.getAttribute('data-skbtn'))).forEach(elem => elem.style.display = 'none');
-        keyboard.querySelector('[data-skbtn="q"]').parentElement.appendChild(keyboard.querySelector('[data-skbtn="{bksp}"]'));
-
         return () => document.removeEventListener('keydown', onKeyDown);
     });
 
@@ -100,10 +94,7 @@ function App() {
                 currLetter={currLetter}
                 invalidWord={invalidWord}
             />
-            <Keyboard
-                onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}
-                submit={currLetter === WORD_LENGTH}
-            />
+            <KeyboardWrapper onKeyPress={onKeyDown} absentLetters={Object.keys(absentLetters)} foundLetters={Object.keys(foundLetters)} />
         </div>
     );
 }

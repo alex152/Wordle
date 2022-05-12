@@ -1,5 +1,4 @@
 import './Wordle.scss';
-import React from 'react';
 
 function Letter({ exact, misplaced, current, char }) {
     const classes = [];
