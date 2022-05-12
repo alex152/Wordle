@@ -97,7 +97,7 @@ function App() {
             <KeyboardWrapper
                 onKeyPress={onKeyDown}
                 invalidWord={invalidWord}
-                submitWord={words[currWord].filter(char => char).length === WORD_LENGTH}
+                submitWord={words[currWord]?.filter(char => char).length === WORD_LENGTH}
                 absentLetters={Object.keys(absentLetters)}
                 foundLetters={Object.keys(foundLetters)}
             />
