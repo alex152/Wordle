@@ -2,6 +2,7 @@ import './Wordle.scss';
 
 function Letter({ exact, misplaced, current, char }) {
     const classes = [];
+    if (!char) classes.push('empty');
     if (exact) classes.push('exact');
     if (misplaced) classes.push('misplaced');
     if (current) classes.push('current');

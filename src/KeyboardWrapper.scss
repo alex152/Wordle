@@ -1,0 +1,13 @@
+@use 'palette';
+
+.hg-button.found-letter {
+    background: palette.$success;
+}
+
+.hg-button.absent-letter {
+    background: palette.$emphasis1;
+}
+
+.hg-button.emphasis {
+    background: palette.$cursor;
+}
