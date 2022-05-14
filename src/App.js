@@ -105,16 +105,14 @@ function App() {
     });
 
     return (
-        <div className='wordle'>
+        <div className='app'>
             <h1 className='title'>Welcome to my daily WORDLE!</h1>
-            <div className='status'>
-                <h2>{
-                    state.gameWon ? 'Great job come back tomorrow!' :
-                        state.gameLost ? 'Game over try again tomorrow!' :
-                            state.invalidWord ? 'Invalid word Erase and try again' :
-                                `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
-                </h2>
-            </div>
+            <h2 className='status'>{
+                state.gameWon ? 'Great job come back tomorrow!' :
+                    state.gameLost ? 'Game over try again tomorrow!' :
+                        state.invalidWord ? 'Invalid word Erase and try again' :
+                            `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
+            </h2>
             <Wordle {...state} />
             <Keyboard
                 onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}

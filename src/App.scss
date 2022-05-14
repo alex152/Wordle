@@ -1,11 +1,14 @@
 @use 'palette';
 @use 'animation';
 
-.wordle {
+.app {
     text-align: center;
     height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
 }
 
 .title {
@@ -13,11 +16,14 @@
 }
 
 .status {
-    min-height: 6.5em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 8px;
+}
+
+.wordle {
+    flex: 1;
 }
 
 .simple-keyboard.hg-theme-default {
