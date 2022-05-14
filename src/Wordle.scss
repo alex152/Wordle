@@ -1,4 +1,5 @@
 @use 'palette';
+@use 'animation';
 
 .wordle-outer-container {
     flex: 1 1;
@@ -43,6 +44,7 @@
 
     &.current {
         background-color: palette.$cursor;
+        @include animation.bounce;
     }
 }
 

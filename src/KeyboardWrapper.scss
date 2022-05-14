@@ -1,4 +1,5 @@
 @use 'palette';
+@use 'animation';
 
 .hg-button {
     &.found-letter {
@@ -9,5 +10,6 @@
     }
     &.emphasis {
         background: palette.$cursor;
+        @include animation.bounce;
     }
 }
