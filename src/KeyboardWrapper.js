@@ -10,8 +10,8 @@ function KeyboardWrapper({ onKeyPress, invalidWord, submitWord, absentLetters, f
         const bksp = keyboard.querySelector('[data-skbtn="{bksp}"]');
         const enter = keyboard.querySelector('[data-skbtn="{enter}"]');
         keyboard.querySelector('[data-skbtn="z"]').parentElement.appendChild(bksp);
-        absentLetters.forEach(absentLetter => keyboard.querySelector(`[data-skbtn="${absentLetter.toLowerCase()}"]`).classList.add('absent-letter'));
-        foundLetters.forEach(foundLetter => keyboard.querySelector(`[data-skbtn="${foundLetter.toLowerCase()}"]`).classList.add('found-letter'));
+        Object.keys(absentLetters).forEach(absentLetter => keyboard.querySelector(`[data-skbtn="${absentLetter.toLowerCase()}"]`).classList.add('absent-letter'));
+        Object.keys(foundLetters).forEach(foundLetter => keyboard.querySelector(`[data-skbtn="${foundLetter.toLowerCase()}"]`).classList.add('found-letter'));
         if (invalidWord) bksp.classList.add('emphasis');
         else bksp.classList.remove('emphasis');
         if (submitWord) enter.classList.add('emphasis');

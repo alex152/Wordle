@@ -13,22 +13,25 @@ const useLocalStorage = (key, defaultVal) => {
 }
 
 function App() {
-    const today = new Date().setHours(0,0,0,0);
+    const today = new Date().setHours(0, 0, 0, 0);
     if (JSON.parse(localStorage.getItem('date')) < today) {
         localStorage.clear();
         localStorage.setItem('date', today);
     };
-    const [words, setWords] = useLocalStorage('words', Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)))
-    const [currWord, setCurrWord] = useLocalStorage('currWord', 0);
-    const [currLetter, setCurrLetter] = useLocalStorage('currLetter', 0);
-    const [gameWon, setGameWon] = useLocalStorage('gameWon', false);
-    const [gameLost, setGameLost] = useLocalStorage('gameLost', false);
-    const [invalidWord, setInvalidWord] = useLocalStorage('invalidWord', false);
-    const [absentLetters, setAbsentLetters] = useLocalStorage('absentLetters', {});
-    const [foundLetters, setFoundLetters] = useLocalStorage('foundLetters', {});
+    const [state, setState] = useLocalStorage('wordleState', {
+        words: Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)),
+        currWord: 0,
+        currLetter: 0,
+        gameWon: false,
+        gameLost: false,
+        invalidWord: false,
+        absentLetters: {},
+        foundLetters: {}
+    });
     const onKeyDown = async ({ key }) => {
+        const { words, currWord, currLetter, gameWon, gameLost, invalidWord, absentLetters, foundLetters } = state;
         if (gameWon || gameLost || (invalidWord && key !== 'Backspace')) return;
-        setInvalidWord(false);
+        state.invalidWord = false;
         switch (key) {
             case 'Enter':
                 if (currLetter < WORD_LENGTH) return;
@@ -40,7 +43,10 @@ function App() {
                     }
                 })).json();
                 if (validateResponse.success === false) {
-                    setInvalidWord(true);
+                    setState({
+                        ...state,
+                        invalidWord: true
+                    });
                     return;
                 };
                 const guessRequest = new URL('daily', 'https://v1.wordle.k2bd.dev');
@@ -63,23 +69,32 @@ function App() {
                     })
                 })
                 const gameWon = tmpWords[currWord].every(letter => letter.exact);
-                setWords(tmpWords);
-                setCurrWord(currWord + 1);
-                setCurrLetter(0);
-                setGameWon(gameWon);
-                setGameLost((currWord === NUM_ATTEMPTS - 1) && !gameWon);
-                setAbsentLetters({ ...absentLetters });
-                setFoundLetters({ ...foundLetters });
+                setState({
+                    ...state,
+                    words: tmpWords,
+                    currWord: currWord + 1,
+                    currLetter: 0,
+                    gameWon: gameWon,
+                    gameLost: (currWord === NUM_ATTEMPTS - 1) && !gameWon,
+                    absentLetters: absentLetters,
+                    foundLetters: foundLetters
+                });
                 break;
             case 'Backspace':
-                setWords(words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter - 1) ? null : letter) : word));
-                setCurrLetter(currLetter > 0 ? currLetter - 1 : 0);
+                setState({
+                    ...state,
+                    words: words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter - 1) ? null : letter) : word),
+                    currLetter: currLetter > 0 ? currLetter - 1 : 0
+                });
                 break;
             default:
                 const char = key.toUpperCase();
                 if (char.length !== 1 || char < 'A' || char > 'Z') return;
-                setWords(words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter) ? { char } : letter) : word));
-                setCurrLetter(currLetter < WORD_LENGTH ? currLetter + 1 : WORD_LENGTH);
+                setState({
+                    ...state,
+                    words: words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter) ? { char } : letter) : word),
+                    currLetter: currLetter < WORD_LENGTH ? currLetter + 1 : WORD_LENGTH
+                });
         }
     };
 
@@ -93,25 +108,14 @@ function App() {
             <h1 className='title'>Welcome to my daily WORDLE!</h1>
             <div className='status'>
                 <h2>{
-                    gameWon ? 'Great job!' :
-                        gameLost ? 'Game over you lost try again tomorrow!' :
-                            invalidWord ? 'Invalid word Erase and try again' :
+                    state.gameWon ? 'Great job come back tomorrow!' :
+                        state.gameLost ? 'Game over try again tomorrow!' :
+                            state.invalidWord ? 'Invalid word Erase and try again' :
                                 `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
                 </h2>
             </div>
-            <Wordle
-                words={words}
-                currWord={currWord}
-                currLetter={currLetter}
-                invalidWord={invalidWord}
-            />
-            <KeyboardWrapper
-                onKeyPress={onKeyDown}
-                invalidWord={invalidWord}
-                submitWord={!invalidWord && words[currWord]?.filter(char => char).length === WORD_LENGTH}
-                absentLetters={Object.keys(absentLetters)}
-                foundLetters={Object.keys(foundLetters)}
-            />
+            <Wordle {...state} />
+            <KeyboardWrapper {...state} onKeyPress={onKeyDown} submitWord={!state.invalidWord && state.words[state.currWord]?.filter(char => char).length === WORD_LENGTH} />
         </div>
     );
 }
