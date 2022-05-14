@@ -6,15 +6,26 @@ import { useState, useEffect } from 'react';
 const WORD_LENGTH = 5;
 const NUM_ATTEMPTS = 6;
 
+const useLocalStorage = (key, defaultVal) => {
+    const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key)) ?? defaultVal);
+    useEffect(() => localStorage.setItem(key, JSON.stringify(value)), [key, value]);
+    return [value, setValue];
+}
+
 function App() {
-    const [words, setWords] = useState(Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)))
-    const [currWord, setCurrWord] = useState(0);
-    const [currLetter, setCurrLetter] = useState(0);
-    const [gameWon, setGameWon] = useState(false);
-    const [gameLost, setGameLost] = useState(false);
-    const [invalidWord, setInvalidWord] = useState(false);
-    const [absentLetters, setAbsentLetters] = useState({});
-    const [foundLetters, setFoundLetters] = useState({});
+    const today = new Date().setHours(0,0,0,0);
+    if (JSON.parse(localStorage.getItem('date')) < today) {
+        localStorage.clear();
+        localStorage.setItem('date', today);
+    };
+    const [words, setWords] = useLocalStorage('words', Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)))
+    const [currWord, setCurrWord] = useLocalStorage('currWord', 0);
+    const [currLetter, setCurrLetter] = useLocalStorage('currLetter', 0);
+    const [gameWon, setGameWon] = useLocalStorage('gameWon', false);
+    const [gameLost, setGameLost] = useLocalStorage('gameLost', false);
+    const [invalidWord, setInvalidWord] = useLocalStorage('invalidWord', false);
+    const [absentLetters, setAbsentLetters] = useLocalStorage('absentLetters', {});
+    const [foundLetters, setFoundLetters] = useLocalStorage('foundLetters', {});
     const onKeyDown = async ({ key }) => {
         if (gameWon || gameLost || (invalidWord && key !== 'Backspace')) return;
         setInvalidWord(false);
@@ -57,8 +68,8 @@ function App() {
                 setCurrLetter(0);
                 setGameWon(gameWon);
                 setGameLost((currWord === NUM_ATTEMPTS - 1) && !gameWon);
-                setAbsentLetters(absentLetters);
-                setFoundLetters(foundLetters);
+                setAbsentLetters({ ...absentLetters });
+                setFoundLetters({ ...foundLetters });
                 break;
             case 'Backspace':
                 setWords(words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter - 1) ? null : letter) : word));
@@ -83,7 +94,7 @@ function App() {
             <div className='status'>
                 <h2>{
                     gameWon ? 'Great job!' :
-                        gameLost ? 'Game over you lost!' :
+                        gameLost ? 'Game over you lost try again tomorrow!' :
                             invalidWord ? 'Invalid word Erase and try again' :
                                 `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
                 </h2>
@@ -97,7 +108,7 @@ function App() {
             <KeyboardWrapper
                 onKeyPress={onKeyDown}
                 invalidWord={invalidWord}
-                submitWord={words[currWord]?.filter(char => char).length === WORD_LENGTH}
+                submitWord={!invalidWord && words[currWord]?.filter(char => char).length === WORD_LENGTH}
                 absentLetters={Object.keys(absentLetters)}
                 foundLetters={Object.keys(foundLetters)}
             />
