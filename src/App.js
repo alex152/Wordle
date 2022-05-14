@@ -1,6 +1,7 @@
 import './App.scss';
 import Wordle from './Wordle';
-import KeyboardWrapper from './KeyboardWrapper';
+import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 import { useState, useEffect } from 'react';
 
 const WORD_LENGTH = 5;
@@ -115,7 +116,29 @@ function App() {
                 </h2>
             </div>
             <Wordle {...state} />
-            <KeyboardWrapper {...state} onKeyPress={onKeyDown} submitWord={!state.invalidWord && state.words[state.currWord]?.filter(char => char).length === WORD_LENGTH} />
+            <Keyboard
+                onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}
+                layout={{
+                    default: [
+                        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].join(' '),
+                        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '{enter}'].join(' '),
+                        ['z', 'x', 'c', 'v', 'b', 'n', 'm', '{bksp}'].join(' ')
+                    ]
+                }}
+                buttonTheme={(state.invalidWord ? [{
+                    class: 'emphasis',
+                    buttons: '{bksp}'
+                }] : []).concat(!state.invalidWord && state.words[state.currWord]?.filter(char => char).length === WORD_LENGTH ? [{
+                    class: 'emphasis',
+                    buttons: '{enter}'
+                }] : []).concat(Object.keys(state.absentLetters).length ? [{
+                    class: 'absent-letter',
+                    buttons: Object.keys(state.absentLetters).map(c => c.toLowerCase()).join(' ')
+                }] : []).concat(Object.keys(state.foundLetters).length ? [{
+                    class: 'found-letter',
+                    buttons: Object.keys(state.foundLetters).map(c => c.toLowerCase()).join(' ')
+                }] : [])}
+            />
         </div>
     );
 }
