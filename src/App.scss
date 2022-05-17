@@ -20,6 +20,18 @@
     flex-direction: column;
     justify-content: center;
     margin: 8px;
+
+    &.win {
+        background: palette.$success;
+    }
+
+    &.lose {
+        background: palette.$emphasis1;
+    }
+
+    &.invalid {
+        background: palette.$error;
+    }
 }
 
 .wordle {
