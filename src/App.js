@@ -74,7 +74,7 @@ function App() {
                     ...state,
                     words: tmpWords,
                     currWord: currWord + 1,
-                    currLetter: 0,
+                    currLetter: gameWon ? null : 0,
                     gameWon: gameWon,
                     gameLost: (currWord === NUM_ATTEMPTS - 1) && !gameWon,
                     absentLetters: absentLetters,
@@ -85,7 +85,7 @@ function App() {
                 setState({
                     ...state,
                     words: words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter - 1) ? null : letter) : word),
-                    currLetter: currLetter > 0 ? currLetter - 1 : 0
+                    currLetter: Math.min(currLetter - 1, 0)
                 });
                 break;
             default:
@@ -94,7 +94,7 @@ function App() {
                 setState({
                     ...state,
                     words: words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter) ? { char } : letter) : word),
-                    currLetter: currLetter < WORD_LENGTH ? currLetter + 1 : WORD_LENGTH
+                    currLetter: Math.min(currLetter + 1, WORD_LENGTH)
                 });
         }
     };
