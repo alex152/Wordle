@@ -7,44 +7,43 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
     justify-content: space-between;
 }
 
 .title {
-    margin: 8px;
+    margin: 0.25em 0;
+    color: palette.$dark;
 }
 
 .status {
-    width: 100%;
-    margin: 8px;
+    padding: 0.3em;
+    margin: 0.25em 0;
+    color: palette.$dark;
+    border-radius: 0.3em;
+    height: 3em;
 
     &.win {
-        background: palette.$success;
+        background: palette.$green;
     }
 
     &.lose {
-        background: palette.$emphasis1;
+        background: palette.$gray;
     }
 
     &.invalid {
-        background: palette.$error;
+        background: palette.$red;
     }
-}
-
-.wordle {
-    flex: 1;
 }
 
 .simple-keyboard.hg-theme-default {
-    box-shadow: 0px -1px 10px 5px grey;
-
+    margin: 0.25em 0 0 0;
+    background: palette.$gray;
     & .found-letter {
-        background: palette.$success;
+        background: palette.$green;
     }
 
     & .absent-letter {
-        background: palette.$emphasis1;
+        background: palette.$emphasis-letter;
     }
 
     & .emphasis {

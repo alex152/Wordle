@@ -2,45 +2,50 @@
 @use 'animation';
 
 .wordle {
-    padding: 8px;
     table-layout: fixed;
-    border-spacing: 8px;
+    border-spacing: 0.25em;
     width: 100%;
-    max-width: 640px;
-    max-height: 640px;
+    max-width: 720px;
+    max-height: 720px;
+    margin: 0.25em 0;
+    background: palette.$gray;
+    border-radius: 0.3em;
+    flex: 1 1;
 }
 
 .letter {
-    background: palette.$emphasis1;
     border-bottom: 1px solid #b5b5b5;
     border-radius: 5px;
     box-shadow: 0 0 3px -1px rgb(0 0 0 / 30%);
     box-sizing: border-box;
+    font-weight: bold;
 
     &.empty {
-        background: #fff;
+        background: palette.$white;
     }
 
     &.exact {
-        background-color: palette.$success;
+        background: palette.$green;
     }
 
     &.misplaced {
-        background-color: palette.$warning;
+        background: palette.$yellow;
     }
 
     &.current {
-        background-color: palette.$cursor;
+        background: palette.$cursor;
         @include animation.bounce;
     }
 }
 
 .word {
+    background: palette.$emphasis-letter;
+
     &.current {
-        background-color: palette.$emphasis2;
+        background: palette.$emphasis-letter;
     }
 
     &.invalid {
-        background-color: palette.$error;
+        background: palette.$red;
     }
 }
