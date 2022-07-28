@@ -2,23 +2,25 @@
 @use 'animation';
 
 .wordle {
-    table-layout: fixed;
-    border-spacing: 0.25em;
-    width: 100%;
-    max-width: 720px;
-    max-height: 720px;
+    display: flex;
+    flex-direction: column;
     margin: 0.25em 0;
     background: palette.$gray;
     border-radius: 0.3em;
-    flex: 1 1;
+    flex: 1;
 }
 
 .letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.25em;
     border-bottom: 1px solid #b5b5b5;
     border-radius: 5px;
     box-shadow: 0 0 3px -1px rgb(0 0 0 / 30%);
-    box-sizing: border-box;
     font-weight: bold;
+    background: palette.$emphasis-letter;
+    flex: 1;
 
     &.empty {
         background: palette.$white;
@@ -39,13 +41,14 @@
 }
 
 .word {
-    background: palette.$emphasis-letter;
+    display: flex;
+    flex: 1;
 
     &.current {
-        background: palette.$emphasis-letter;
+        // background: palette.$emphasis-letter;
     }
 
     &.invalid {
-        background: palette.$red;
+        // background: palette.$red;
     }
 }

@@ -85,7 +85,7 @@ function App() {
                 setState({
                     ...state,
                     words: words.map((word, i) => (i === currWord) ? word.map((letter, j) => (j === currLetter - 1) ? null : letter) : word),
-                    currLetter: Math.min(currLetter - 1, 0)
+                    currLetter: Math.max(currLetter - 1, 0)
                 });
                 break;
             default:
@@ -107,12 +107,14 @@ function App() {
     return (
         <div className='app'>
             <h1 className='title'>Daily WORDLE</h1>
-            <h2 className={['status'].concat(state.invalidWord ? ['invalid'] : state.gameWon ? ['win'] : state.gameLost ? ['lose'] : []).join(' ')}>{
-                state.gameWon ? 'Great job come back tomorrow!' :
-                    state.gameLost ? 'Game over try again tomorrow!' :
-                        state.invalidWord ? 'Invalid word Erase and try again' :
-                            `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
-            </h2>
+            <div className='status-wrapper'>
+                <h2 className={['status'].concat(state.invalidWord ? ['invalid'] : state.gameWon ? ['win'] : state.gameLost ? ['lose'] : []).join(' ')}>{
+                    state.gameWon ? 'Great job come back tomorrow!' :
+                        state.gameLost ? 'Game over try again tomorrow!' :
+                            state.invalidWord ? 'Invalid word Erase and try again' :
+                                `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
+                </h2>
+            </div>
             <Wordle {...state} />
             <Keyboard
                 onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}
