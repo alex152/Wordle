@@ -73,7 +73,7 @@ function App() {
                 setState({
                     ...state,
                     words: tmpWords,
-                    currWord: currWord + 1,
+                    currWord: gameWon ? null : currWord + 1,
                     currLetter: gameWon ? null : 0,
                     gameWon: gameWon,
                     gameLost: (currWord === NUM_ATTEMPTS - 1) && !gameWon,
@@ -106,7 +106,9 @@ function App() {
 
     return (
         <div className='app'>
-            <h1 className='title'>Daily WORDLE</h1>
+            <div className='header'>
+                <h1 className='title'>Daily Wordle</h1>
+            </div>
             <div className='status-wrapper'>
                 <h2 className={['status'].concat(state.invalidWord ? ['invalid'] : state.gameWon ? ['win'] : state.gameLost ? ['lose'] : []).join(' ')}>{
                     state.gameWon ? 'Great job come back tomorrow!' :
@@ -116,29 +118,31 @@ function App() {
                 </h2>
             </div>
             <Wordle {...state} />
-            <Keyboard
-                onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}
-                layout={{
-                    default: [
-                        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].join(' '),
-                        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '{enter}'].join(' '),
-                        ['z', 'x', 'c', 'v', 'b', 'n', 'm', '{bksp}'].join(' ')
-                    ]
-                }}
-                buttonTheme={(state.invalidWord ? [{
-                    class: 'emphasis',
-                    buttons: '{bksp}'
-                }] : []).concat(!state.invalidWord && state.words[state.currWord]?.filter(char => char).length === WORD_LENGTH ? [{
-                    class: 'emphasis',
-                    buttons: '{enter}'
-                }] : []).concat(Object.keys(state.absentLetters).length ? [{
-                    class: 'absent-letter',
-                    buttons: Object.keys(state.absentLetters).map(c => c.toLowerCase()).join(' ')
-                }] : []).concat(Object.keys(state.foundLetters).length ? [{
-                    class: 'found-letter',
-                    buttons: Object.keys(state.foundLetters).map(c => c.toLowerCase()).join(' ')
-                }] : [])}
-            />
+            <div className='keyboard-wrapper'>
+                <Keyboard
+                    onKeyPress={key => onKeyDown({ key: key === '{bksp}' ? 'Backspace' : key === '{enter}' ? 'Enter' : key })}
+                    layout={{
+                        default: [
+                            ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'].join(' '),
+                            ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '{enter}'].join(' '),
+                            ['z', 'x', 'c', 'v', 'b', 'n', 'm', '{bksp}'].join(' ')
+                        ]
+                    }}
+                    buttonTheme={(state.invalidWord ? [{
+                        class: 'emphasis',
+                        buttons: '{bksp}'
+                    }] : []).concat(!state.invalidWord && state.words[state.currWord]?.filter(char => char).length === WORD_LENGTH ? [{
+                        class: 'emphasis',
+                        buttons: '{enter}'
+                    }] : []).concat(Object.keys(state.absentLetters).length ? [{
+                        class: 'absent-letter',
+                        buttons: Object.keys(state.absentLetters).map(c => c.toLowerCase()).join(' ')
+                    }] : []).concat(Object.keys(state.foundLetters).length ? [{
+                        class: 'found-letter',
+                        buttons: Object.keys(state.foundLetters).map(c => c.toLowerCase()).join(' ')
+                    }] : [])}
+                />
+            </div>
         </div>
     );
 }

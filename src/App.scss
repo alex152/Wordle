@@ -9,12 +9,17 @@
     justify-content: space-between;
     align-items: stretch;
     flex: 1;
-    max-width: 480px;
+}
+
+.header {
+    background: palette.$dark;
+    box-shadow: 0 0px 2px 2px palette.$dark;
+    display: flex;
+    justify-content: center;
 }
 
 .title {
-    margin: 0.25em 0;
-    color: palette.$dark;
+    color: palette.$white;
 }
 
 .status-wrapper {
@@ -22,12 +27,12 @@
     align-items: center;
     justify-content: center;
     justify-items: center;
-    flex: 0.3;
+    flex: 0.23;
 }
 
 .status {
     padding: 0.3em;
-    margin: 0.25em 0;
+    margin: 0;
     color: palette.$dark;
     border-radius: 0.3em;
 
@@ -44,9 +49,18 @@
     }
 }
 
+.keyboard-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .simple-keyboard.hg-theme-default {
     margin: 0.25em 0 0 0;
     background: palette.$gray;
+    max-width: 480px;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 8px 2px palette.$dark;
+
     & .found-letter {
         background: palette.$green;
     }
