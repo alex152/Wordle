@@ -112,9 +112,7 @@ export default function App() {
 
     return (
         <div className='app'>
-            <div className='header'>
-                <h1 className='title'>Daily Wordle</h1>
-            </div>
+            <h1 className='header'>Daily Wordle</h1>
             <div className='status-wrapper'>
                 <h2 className={['status'].concat(state.invalidWord ? ['invalid'] : state.gameWon ? ['win'] : state.gameLost ? ['lose'] : []).join(' ')}>{
                     state.gameWon ? 'Great job come back tomorrow!' :

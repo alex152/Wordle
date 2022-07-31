@@ -14,12 +14,10 @@
 .header {
     background: palette.$dark;
     box-shadow: 0 0px 2px 2px palette.$dark;
-    display: flex;
-    justify-content: center;
-}
-
-.title {
     color: palette.$white;
+    height: 64px;
+    line-height: 64px;
+    margin: 0;
 }
 
 .status-wrapper {
