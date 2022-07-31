@@ -20,7 +20,7 @@ function Word({ word, invalid, current }) {
     );
 }
 
-function Wordle({ words, currWord, currLetter, invalidWord }) {
+export default function Wordle({ words, currWord, currLetter, invalidWord }) {
     return (
         <div className='wordle-wrapper'>
             <div className='wordle'>
@@ -29,5 +29,3 @@ function Wordle({ words, currWord, currLetter, invalidWord }) {
         </div>
     );
 }
-
-export default Wordle;

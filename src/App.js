@@ -18,7 +18,7 @@ export function getDateStr(date=new Date()) {
     return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`
 }
 
-function App() {
+export default function App() {
     const today = getDateStr();
     const storedDate = localStorage.getItem('date');
     if (!storedDate || storedDate < today) {
@@ -152,5 +152,3 @@ function App() {
         </div>
     );
 }
-
-export default App;
