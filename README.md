@@ -1,3 +1,3 @@
 # Wordle
 
-See it in action - https://alex152.github.io/wordle/
+See it in action - https://alexanderbiba.github.io/wordle/
