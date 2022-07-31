@@ -13,9 +13,15 @@ const useLocalStorage = (key, defaultVal) => {
     return [value, setValue];
 }
 
+const pad = num => `${num < 10 ? '0' : ''}${num}`;
+export function getDateStr(date=new Date()) {
+    return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`
+}
+
 function App() {
-    const today = new Date().setHours(0, 0, 0, 0);
-    if (JSON.parse(localStorage.getItem('date')) < today) {
+    const today = getDateStr();
+    const storedDate = localStorage.getItem('date');
+    if (!storedDate || storedDate < today) {
         localStorage.clear();
         localStorage.setItem('date', today);
     };
