@@ -56,8 +56,8 @@ export default function App() {
       case "Enter":
         if (currLetter < WORD_LENGTH) return;
         const guessRequest = new URL(
-          "wordle-117cf/us-central1/checkWord",
-          "http://localhost:5001"
+          "checkWord",
+          "https://us-central1-wordle-117cf.cloudfunctions.net"
         );
         guessRequest.searchParams.append(
           "word",
