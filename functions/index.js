@@ -3,7 +3,7 @@ import admin from "firebase-admin";
 import wordleWords from "./words.js";
 import cors from "cors";
 
-const corsHandler = cors({ origin: "http://localhost" });
+const corsHandler = cors({ origin: "https://alexanderbiba.github.io" });
 
 const pad = (num) => `${num < 10 ? "0" : ""}${num}`;
 const getDateStr = (date = new Date()) =>
