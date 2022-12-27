@@ -1,5 +1,4 @@
 import "./App.scss";
-import Wordle from "./Wordle";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import { useState, useEffect } from "react";
@@ -23,6 +22,32 @@ const getDateStr = (date = new Date()) =>
   `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(
     date.getUTCDate()
   )}`;
+
+function Letter({ exact, misplaced, current, char }) {
+  const classes = [];
+  if (!char) classes.push("empty");
+  if (exact) classes.push("exact");
+  if (misplaced) classes.push("misplaced");
+  if (current) classes.push("current");
+  return (
+    <div className={["letter"].concat(classes).join(" ")}>
+      <span>{char ?? "\0"}</span>
+    </div>
+  );
+}
+
+function Word({ word, invalid, current }) {
+  const classes = [];
+  if (invalid) classes.push("invalid");
+  if (current) classes.push("current");
+  return (
+    <div className={["word"].concat(classes).join(" ")}>
+      {word.map((letter, i) => (
+        <Letter {...letter} key={i} />
+      ))}
+    </div>
+  );
+}
 
 export default function App() {
   const today = getDateStr();
@@ -168,7 +193,26 @@ export default function App() {
             : `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
         </h2>
       </div>
-      <Wordle {...state} />
+      <div className="wordle-wrapper">
+        <div className="wordle">
+          {state.words.map((word, i) => (
+            <Word
+              word={
+                i === state.currWord
+                  ? word.map((letter, j) =>
+                      j === state.currLetter
+                        ? { ...letter, current: true }
+                        : { ...letter, current: false }
+                    )
+                  : word
+              }
+              current={i === state.currWord}
+              invalid={i === state.currWord && state.invalidWord}
+              key={i}
+            />
+          ))}
+        </div>
+      </div>
       <div className="keyboard-wrapper">
         <Keyboard
           onKeyPress={(key) =>
