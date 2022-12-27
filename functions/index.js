@@ -7,7 +7,7 @@ const corsHandler = cors({ origin: "https://alexanderbiba.github.io" });
 
 const pad = (num) => `${num < 10 ? "0" : ""}${num}`;
 const getDateStr = (date = new Date()) =>
-  `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`;
+  `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}`;
 
 const guessResult = {
   missing: 0,
