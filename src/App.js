@@ -20,7 +20,9 @@ const useLocalStorage = (key, defaultVal) => {
 
 const pad = (num) => `${num < 10 ? "0" : ""}${num}`;
 const getDateStr = (date = new Date()) =>
-  `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(date.getUTCDate())}`;
+  `${date.getUTCFullYear()}${pad(date.getUTCMonth() + 1)}${pad(
+    date.getUTCDate()
+  )}`;
 
 export default function App() {
   const today = getDateStr();
@@ -29,6 +31,7 @@ export default function App() {
     localStorage.clear();
     localStorage.setItem("date", today);
   }
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useLocalStorage("wordleState", {
     words: Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)),
     currWord: 0,
@@ -63,7 +66,9 @@ export default function App() {
           "word",
           words[currWord].map(({ char }) => char).join("")
         );
+        setLoading(true);
         const guessResponse = await (await fetch(guessRequest)).json();
+        setLoading(false);
         if (guessResponse.error === "INVALID_WORD") {
           setState({
             ...state,
@@ -140,7 +145,9 @@ export default function App() {
         <h2
           className={["status"]
             .concat(
-              state.invalidWord
+              loading
+                ? ["loading"]
+                : state.invalidWord
                 ? ["invalid"]
                 : state.gameWon
                 ? ["win"]
@@ -150,7 +157,9 @@ export default function App() {
             )
             .join(" ")}
         >
-          {state.gameWon
+          {loading
+            ? "Checking word..."
+            : state.gameWon
             ? "Great job come back tomorrow!"
             : state.gameLost
             ? "Game over try again tomorrow!"
