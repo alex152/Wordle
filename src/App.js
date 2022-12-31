@@ -190,6 +190,8 @@ export default function App() {
             ? "Game over try again tomorrow!"
             : state.invalidWord
             ? "Invalid word Erase and try again"
+            : state.currWord
+            ? `${NUM_ATTEMPTS - state.currWord} attempts left`
             : `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
         </h2>
       </div>
