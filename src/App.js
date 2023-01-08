@@ -74,7 +74,7 @@ export default function App() {
       absentLetters,
       foundLetters,
     } = state;
-    if (gameWon || gameLost || (invalidWord && key !== "Backspace")) return;
+    if (loading || gameWon || gameLost || (invalidWord && key !== "Backspace")) return;
     state.invalidWord = false;
     switch (key) {
       case "Enter":
