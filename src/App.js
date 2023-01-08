@@ -216,7 +216,7 @@ export default function App() {
           onKeyPress={(key) =>
             onKeyDown({
               key:
-                key === "{bksp}"
+                key === "{backspace}"
                   ? "Backspace"
                   : key === "{enter}"
                   ? "Enter"
@@ -248,7 +248,7 @@ export default function App() {
             ? [
                 {
                   class: "emphasis",
-                  buttons: "{bksp}",
+                  buttons: "{backspace}",
                 },
               ]
             : []
