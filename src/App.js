@@ -23,28 +23,24 @@ const getDateStr = (date = new Date()) =>
     date.getUTCDate()
   )}`;
 
-function Letter({ exact, misplaced, current, char }) {
-  const classes = [];
-  if (!char) classes.push("empty");
-  if (exact) classes.push("exact");
-  if (misplaced) classes.push("misplaced");
-  if (current) classes.push("current");
-  return (
-    <div className={["letter"].concat(classes).join(" ")}>
-      <span>{char ?? "\0"}</span>
-    </div>
-  );
-}
-
 function Word({ word, invalid, current }) {
   const classes = [];
   if (invalid) classes.push("invalid");
   if (current) classes.push("current");
   return (
     <div className={["word"].concat(classes).join(" ")}>
-      {word.map((letter, i) => (
-        <Letter {...letter} key={i} />
-      ))}
+      {word.map(({ exact, misplaced, current, char }, i) => {
+        const classes = [];
+        if (!char) classes.push("empty");
+        if (exact) classes.push("exact");
+        if (misplaced) classes.push("misplaced");
+        if (current) classes.push("current");
+        return (
+          <div key={i} className={["letter"].concat(classes).join(" ")}>
+            <span>{char ?? "\0"}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -58,14 +54,14 @@ export default function App() {
   }
   const [loading, setLoading] = useState(false);
   const [state, setState] = useLocalStorage("wordleState", {
-    words: Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill(null)),
+    words: Array(NUM_ATTEMPTS).fill(Array(WORD_LENGTH).fill({})),
     currWord: 0,
     currLetter: 0,
     gameWon: false,
     gameLost: false,
     invalidWord: false,
-    absentLetters: {},
-    foundLetters: {},
+    absentLetters: new Set(),
+    foundLetters: new Set(),
   });
   const onKeyDown = async ({ key }) => {
     const {
@@ -109,13 +105,13 @@ export default function App() {
           return word.map((letter, j) => {
             switch (guessResponse[j]) {
               case 2:
-                foundLetters[letter.char] = true;
+                foundLetters.add(letter.char);
                 return { ...letter, exact: true };
               case 1:
-                foundLetters[letter.char] = true;
+                foundLetters.add(letter.char);
                 return { ...letter, misplaced: true };
               default:
-                absentLetters[letter.char] = true;
+                absentLetters.add(letter.char);
                 return letter;
             }
           });
@@ -128,8 +124,8 @@ export default function App() {
           currLetter: gameWon ? null : 0,
           gameWon: gameWon,
           gameLost: currWord === NUM_ATTEMPTS - 1 && !gameWon,
-          absentLetters: absentLetters,
-          foundLetters: foundLetters,
+          absentLetters,
+          foundLetters,
         });
         break;
       case "Backspace":
@@ -137,7 +133,7 @@ export default function App() {
           ...state,
           words: words.map((word, i) =>
             i === currWord
-              ? word.map((letter, j) => (j === currLetter - 1 ? null : letter))
+              ? word.map((letter, j) => (j === currLetter - 1 ? {} : letter))
               : word
           ),
           currLetter: Math.max(currLetter - 1, 0),
@@ -259,8 +255,8 @@ export default function App() {
           )
             .concat(
               !state.invalidWord &&
-                state.words[state.currWord]?.filter((char) => char).length ===
-                  WORD_LENGTH
+                state.words[state.currWord]?.filter(({ char }) => char)
+                  .length === WORD_LENGTH
                 ? [
                     {
                       class: "emphasis",
@@ -270,11 +266,11 @@ export default function App() {
                 : []
             )
             .concat(
-              Object.keys(state.absentLetters).length
+              state.absentLetters.size
                 ? [
                     {
                       class: "absent-letter",
-                      buttons: Object.keys(state.absentLetters)
+                      buttons: Array.from(state.absentLetters)
                         .map((c) => c.toLowerCase())
                         .join(" "),
                     },
@@ -282,11 +278,11 @@ export default function App() {
                 : []
             )
             .concat(
-              Object.keys(state.foundLetters).length
+              state.foundLetters.size
                 ? [
                     {
                       class: "found-letter",
-                      buttons: Object.keys(state.foundLetters)
+                      buttons: Array.from(state.foundLetters)
                         .map((c) => c.toLowerCase())
                         .join(" "),
                     },

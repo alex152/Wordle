@@ -1,138 +1,139 @@
-@use 'palette';
-@use 'animation';
+@use "palette";
+@use "animation";
 
 .app {
-    text-align: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    flex: 1;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex: 1;
 }
 
 .header {
-    background: palette.$dark;
-    box-shadow: 0 0px 2px 2px palette.$dark;
-    color: palette.$white;
-    height: 64px;
-    line-height: 64px;
-    margin: 0;
+  background: palette.$dark;
+  box-shadow: 0 0px 2px 2px palette.$dark;
+  color: palette.$white;
+  height: 64px;
+  line-height: 64px;
+  margin: 0;
 }
 
 .status-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    flex: 0.23;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  flex: 0.23;
 }
 
 .status {
-    padding: 0.3em;
-    margin: 0;
-    color: palette.$dark;
-    border-radius: 0.3em;
+  padding: 0.3em;
+  margin: 0;
+  color: palette.$dark;
+  border-radius: 0.3em;
 
-    &.win {
-        background: palette.$green;
-    }
+  &.win {
+    background: palette.$green;
+  }
 
-    &.lose {
-        background: palette.$gray;
-    }
+  &.lose {
+    background: palette.$gray;
+  }
 
-    &.invalid {
-        background: palette.$red;
-    }
+  &.invalid {
+    background: palette.$red;
+  }
 }
 
 .keyboard-wrapper {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
 }
 
 .simple-keyboard.hg-theme-default {
-    margin: 0.25em 0 0 0;
-    background: palette.$gray;
-    max-width: 480px;
-    border-radius: 5px 5px 0 0;
-    box-shadow: 0 0px 2px 2px #2b2b2b80;
+  margin: 0.25em 0 0 0;
+  background: palette.$gray;
+  max-width: 480px;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 0px 2px 2px #2b2b2b80;
 
-    & .found-letter {
-        background: palette.$green;
-    }
+  & .found-letter {
+    background: palette.$green;
+  }
 
-    & .absent-letter {
-        background: palette.$emphasis-letter;
-    }
+  & .absent-letter {
+    background: palette.$emphasis-letter;
+  }
 
-    & .emphasis {
-        background: palette.$cursor;
-        @include animation.bounce;
-    }
+  & .emphasis {
+    background: palette.$cursor;
+    @include animation.bounce;
+  }
 }
 
 .wordle-wrapper {
-    display: flex;
-    flex: 1;
-    align-items: stretch;
-    justify-content: center;
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .wordle {
-    display: flex;
-    flex-direction: column;
-    margin: 0.25em 0;
-    background: palette.$gray;
-    border-radius: 0.3em;
-    flex: 1;
-    max-width: 380px;
-    max-height: 420px;
-    box-shadow: 0 0px 2px 2px #2b2b2b80;
+  display: flex;
+  flex-direction: column;
+  margin: 0.25em 0;
+  background: palette.$gray;
+  border-radius: 0.3em;
+  flex: 1;
+  max-width: 380px;
+  max-height: 420px;
+  box-shadow: 0 0px 2px 2px #2b2b2b80;
 }
 
 .letter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0.15em 0.2em;
-    border-bottom: 1px solid #b5b5b5;
-    border-radius: 5px;
-    box-shadow: 0 0 3px -1px rgb(0 0 0 / 30%);
-    font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.15em 0.2em;
+  border-bottom: 1px solid #b5b5b5;
+  border-radius: 5px;
+  box-shadow: 0 0 3px -1px rgb(0 0 0 / 30%);
+  font-weight: bold;
+  background: palette.$white;
+  flex: 1;
+
+  &.empty {
     background: palette.$white;
-    flex: 1;
+  }
 
-    &.empty {
-        background: palette.$white;
-    }
+  &.exact {
+    background: palette.$green;
+  }
 
-    &.exact {
-        background: palette.$green;
-    }
+  &.misplaced {
+    background: palette.$yellow;
+  }
 
-    &.misplaced {
-        background: palette.$yellow;
-    }
-
-    &.current {
-        background: palette.$cursor;
-        @include animation.bounce;
-    }
+  &.current {
+    background: palette.$cursor;
+    @include animation.bounce;
+  }
 }
 
 .word {
-    display: flex;
-    flex: 1;
-    border: 3px solid palette.$gray;
-    border-radius: 5px;
+  display: flex;
+  flex: 1;
+  border: 3px solid palette.$gray;
+  border-radius: 5px;
 
-    &.current {
-        border: 3px solid palette.$cursor;
-    }
+  &.current {
+    border: 3px solid palette.$cursor;
+  }
 
-    &.invalid {
-        background: palette.$red;
-    }
+  &.invalid {
+    background: palette.$red;
+  }
 }
