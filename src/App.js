@@ -230,11 +230,23 @@ export default function App() {
           layout={{
             default: [
               ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"].join(" "),
-              ["a", "s", "d", "f", "g", "h", "j", "k", "l", "{enter}"].join(
-                " "
-              ),
-              ["z", "x", "c", "v", "b", "n", "m", "{bksp}"].join(" "),
+              ["a", "s", "d", "f", "g", "h", "j", "k", "l"].join(" "),
+              [
+                "{backspace}",
+                "z",
+                "x",
+                "c",
+                "v",
+                "b",
+                "n",
+                "m",
+                "{enter}",
+              ].join(" "),
             ],
+          }}
+          display={{
+            "{backspace}": "⌫",
+            "{enter}": "⏎",
           }}
           buttonTheme={(state.invalidWord
             ? [
@@ -281,6 +293,7 @@ export default function App() {
                   ]
                 : []
             )}
+          physicalKeyboardHighlight={true}
         />
       </div>
     </div>
