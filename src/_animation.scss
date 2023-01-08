@@ -1,9 +1,14 @@
-@keyframes blink {
-    0%    { transform: scale(1); }
-    50%   { transform: scale(1.05); }
-    100%   { transform: scale(1); }
-}
+@use "palette";
 
-@mixin bounce {
-    animation: blink 1s infinite;
+$ripple-color: palette.$dark;
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0rem rgba($ripple-color, 0.5),
+      0 0 0 0.3rem rgba($ripple-color, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0.3rem rgba($ripple-color, 0.5),
+      0 0 0 0.4rem rgba($ripple-color, 0);
+  }
 }

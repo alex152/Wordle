@@ -60,8 +60,8 @@ export default function App() {
     gameWon: false,
     gameLost: false,
     invalidWord: false,
-    absentLetters: new Set(),
-    foundLetters: new Set(),
+    absentLetters: {},
+    foundLetters: {},
   });
   const onKeyDown = async ({ key }) => {
     const {
@@ -105,13 +105,13 @@ export default function App() {
           return word.map((letter, j) => {
             switch (guessResponse[j]) {
               case 2:
-                foundLetters.add(letter.char);
+                foundLetters[letter.char] = true;
                 return { ...letter, exact: true };
               case 1:
-                foundLetters.add(letter.char);
+                foundLetters[letter.char] = true;
                 return { ...letter, misplaced: true };
               default:
-                absentLetters.add(letter.char);
+                absentLetters[letter.char] = true;
                 return letter;
             }
           });
@@ -266,11 +266,11 @@ export default function App() {
                 : []
             )
             .concat(
-              state.absentLetters.size
+              Object.keys(state.absentLetters).length
                 ? [
                     {
                       class: "absent-letter",
-                      buttons: Array.from(state.absentLetters)
+                      buttons: Object.keys(state.absentLetters)
                         .map((c) => c.toLowerCase())
                         .join(" "),
                     },
@@ -278,11 +278,11 @@ export default function App() {
                 : []
             )
             .concat(
-              state.foundLetters.size
+              Object.keys(state.foundLetters).length
                 ? [
                     {
                       class: "found-letter",
-                      buttons: Array.from(state.foundLetters)
+                      buttons: Object.keys(state.foundLetters)
                         .map((c) => c.toLowerCase())
                         .join(" "),
                     },
