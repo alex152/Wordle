@@ -33,23 +33,36 @@
   flex: 0.23;
 }
 
-.status {
-  color: palette.$dark;
-  background: palette.$white;
+.status-text {
+  padding: 0.2em;
   border-radius: 0.3em;
-  font-size: 1.5em;
 
   &.win {
     background: palette.$green;
+    .status {
+      background: inherit;
+    }
   }
 
   &.lose {
     background: palette.$gray;
+    .status {
+      background: inherit;
+    }
   }
 
   &.invalid {
     background: palette.$red;
+    .status {
+      background: inherit;
+    }
   }
+}
+
+.status {
+  color: palette.$dark;
+  background: palette.$white;
+  font-size: 1.5em;
 }
 
 .keyboard-wrapper {
@@ -119,10 +132,10 @@
 
   &.empty {
     background: repeating-linear-gradient(
-      135deg,
+        135deg,
       palette.$white 0 2px,
       transparent 2px 3px
-    );
+      );
   }
 
   &.exact {

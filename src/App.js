@@ -163,23 +163,23 @@ export default function App() {
   return (
     <div className="app">
       <h1 className="header">Daily Wordle</h1>
-      <div className="status-wrapper">
-        <span>
-          <mark
-            className={["status"]
-              .concat(
-                loading
-                  ? ["loading"]
-                  : state.invalidWord
-                  ? ["invalid"]
-                  : state.gameWon
-                  ? ["win"]
-                  : state.gameLost
-                  ? ["lose"]
-                  : []
-              )
-              .join(" ")}
-          >
+      <div
+        className="status-wrapper"
+      >
+        <div className={["status-text"]
+          .concat(
+            loading
+              ? ["loading"]
+              : state.invalidWord
+              ? ["invalid"]
+              : state.gameWon
+              ? ["win"]
+              : state.gameLost
+              ? ["lose"]
+              : []
+          )
+          .join(" ")}>
+          <mark className="status">
             {loading
               ? "Checking word..."
               : state.gameWon
@@ -192,7 +192,7 @@ export default function App() {
               ? `${NUM_ATTEMPTS - state.currWord} attempts left`
               : `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
           </mark>
-        </span>
+        </div>
       </div>
       <div className="wordle-wrapper">
         <div className="wordle">
