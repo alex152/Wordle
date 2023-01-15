@@ -23,28 +23,6 @@ const getDateStr = (date = new Date()) =>
     date.getUTCDate()
   )}`;
 
-function Word({ word, invalid, current }) {
-  const classes = [];
-  if (invalid) classes.push("invalid");
-  if (current) classes.push("current");
-  return (
-    <div className={["word"].concat(classes).join(" ")}>
-      {word.map(({ exact, misplaced, current, char }, i) => {
-        const classes = [];
-        if (!char) classes.push("empty");
-        if (exact) classes.push("exact");
-        if (misplaced) classes.push("misplaced");
-        if (current) classes.push("current");
-        return (
-          <div key={i} className={["letter"].concat(classes).join(" ")}>
-            <span>{char ?? "\0"}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
 export default function App() {
   const today = getDateStr();
   const storedDate = localStorage.getItem("date");
@@ -163,22 +141,22 @@ export default function App() {
   return (
     <div className="app">
       <h1 className="header">Daily Wordle</h1>
-      <div
-        className="status-wrapper"
-      >
-        <div className={["status-text"]
-          .concat(
-            loading
-              ? ["loading"]
-              : state.invalidWord
-              ? ["invalid"]
-              : state.gameWon
-              ? ["win"]
-              : state.gameLost
-              ? ["lose"]
-              : []
-          )
-          .join(" ")}>
+      <div className="status-wrapper">
+        <div
+          className={["status-text"]
+            .concat(
+              loading
+                ? ["loading"]
+                : state.invalidWord
+                ? ["invalid"]
+                : state.gameWon
+                ? ["win"]
+                : state.gameLost
+                ? ["lose"]
+                : []
+            )
+            .join(" ")}
+        >
           <mark className="status">
             {loading
               ? "Checking word..."
@@ -196,22 +174,41 @@ export default function App() {
       </div>
       <div className="wordle-wrapper">
         <div className="wordle">
-          {state.words.map((word, i) => (
-            <Word
-              word={
-                i === state.currWord
+          {state.words.map((word, i) => {
+            const current = i === state.currWord;
+
+            const classes = [];
+            if (current) classes.push("current");
+            if (i === state.currWord && state.invalidWord)
+              classes.push("invalid");
+
+            return (
+              <div key={i} className={["word"].concat(classes).join(" ")}>
+                {(current
                   ? word.map((letter, j) =>
                       j === state.currLetter
                         ? { ...letter, current: true }
                         : { ...letter, current: false }
                     )
                   : word
-              }
-              current={i === state.currWord}
-              invalid={i === state.currWord && state.invalidWord}
-              key={i}
-            />
-          ))}
+                ).map(({ exact, misplaced, current, char }, j) => {
+                  const classes = [];
+                  if (!char) classes.push("empty");
+                  if (exact) classes.push("exact");
+                  if (misplaced) classes.push("misplaced");
+                  if (current) classes.push("current");
+                  return (
+                    <div
+                      key={j}
+                      className={["letter"].concat(classes).join(" ")}
+                    >
+                      <span>{char ?? "\0"}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="keyboard-wrapper">
