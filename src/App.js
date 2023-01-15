@@ -74,7 +74,8 @@ export default function App() {
       absentLetters,
       foundLetters,
     } = state;
-    if (loading || gameWon || gameLost || (invalidWord && key !== "Backspace")) return;
+    if (loading || gameWon || gameLost || (invalidWord && key !== "Backspace"))
+      return;
     state.invalidWord = false;
     switch (key) {
       case "Enter":
@@ -163,33 +164,35 @@ export default function App() {
     <div className="app">
       <h1 className="header">Daily Wordle</h1>
       <div className="status-wrapper">
-        <h2
-          className={["status"]
-            .concat(
-              loading
-                ? ["loading"]
-                : state.invalidWord
-                ? ["invalid"]
-                : state.gameWon
-                ? ["win"]
-                : state.gameLost
-                ? ["lose"]
-                : []
-            )
-            .join(" ")}
-        >
-          {loading
-            ? "Checking word..."
-            : state.gameWon
-            ? "Great job come back tomorrow!"
-            : state.gameLost
-            ? "Game over try again tomorrow!"
-            : state.invalidWord
-            ? "Invalid word Erase and try again"
-            : state.currWord
-            ? `${NUM_ATTEMPTS - state.currWord} attempts left`
-            : `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
-        </h2>
+        <span>
+          <mark
+            className={["status"]
+              .concat(
+                loading
+                  ? ["loading"]
+                  : state.invalidWord
+                  ? ["invalid"]
+                  : state.gameWon
+                  ? ["win"]
+                  : state.gameLost
+                  ? ["lose"]
+                  : []
+              )
+              .join(" ")}
+          >
+            {loading
+              ? "Checking word..."
+              : state.gameWon
+              ? "Great job come back tomorrow!"
+              : state.gameLost
+              ? "Game over try again tomorrow!"
+              : state.invalidWord
+              ? "Invalid word Erase and try again"
+              : state.currWord
+              ? `${NUM_ATTEMPTS - state.currWord} attempts left`
+              : `Try guessing the ${WORD_LENGTH} letter word in ${NUM_ATTEMPTS} attempts`}
+          </mark>
+        </span>
       </div>
       <div className="wordle-wrapper">
         <div className="wordle">
